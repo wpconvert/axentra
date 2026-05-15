@@ -189,22 +189,8 @@
       overflow:hidden;
     }
 
-    .inquiry-box::before{
-      content:'';
-      position:absolute;
-      width:250px;
-      height:250px;
-      background:rgba(255,0,0,0.08);
-      filter:blur(100px);
-      top:-100px;
-      right:-100px;
-      border-radius:50%;
-    }
-
     .input-group{
       margin-bottom:25px;
-      position:relative;
-      z-index:2;
     }
 
     .input-group label{
@@ -226,12 +212,6 @@
       outline:none;
     }
 
-    .input-group select:focus,
-    .input-group input:focus{
-      border-color:#dc2626;
-      box-shadow:0 0 0 3px rgba(220,38,38,0.2);
-    }
-
     .check-btn{
       width:100%;
       padding:20px;
@@ -242,14 +222,6 @@
       font-size:18px;
       font-weight:700;
       cursor:pointer;
-      transition:0.3s;
-      position:relative;
-      z-index:2;
-    }
-
-    .check-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 10px 25px rgba(255,0,0,0.2);
     }
 
     .loading{
@@ -267,8 +239,6 @@
       border-radius:25px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.05);
-      position:relative;
-      z-index:2;
     }
 
     .result h2{
@@ -297,31 +267,6 @@
       color:#ef4444;
     }
 
-    @media(max-width:1100px){
-
-      body{
-        overflow:auto;
-      }
-
-      .container{
-        flex-direction:column;
-        height:auto;
-      }
-
-      .sidebar{
-        width:100%;
-      }
-
-      .back-btn{
-        position:relative;
-        top:0;
-        right:0;
-        display:inline-block;
-        margin-bottom:25px;
-      }
-
-    }
-
   </style>
 </head>
 <body>
@@ -338,13 +283,23 @@
         </div>
 
         <div class="menu">
-          <a href="https://wpconvert.github.io/axentra/panel/dashboard/index.html">🏠 Dashboard</a>
 
-          <a href="#" class="active">🏦 Bank Inquiry</a>
+          <a href="https://wpconvert.github.io/axentra/panel/dashboard/index.html">
+            🏠 Dashboard
+          </a>
 
-          <a href="https://wpconvert.github.io/axentra/panel/walletinqu/index.html">💳 Ewallet Inquiry</a>
+          <a href="#" class="active">
+            🏦 Bank Inquiry
+          </a>
 
-          <a href="https://wpconvert.github.io/axentra/panel/logs/index.html">📄 Transaction Logs</a>
+          <a href="https://wpconvert.github.io/axentra/panel/walletinqu/index.html">
+            💳 Ewallet Inquiry
+          </a>
+
+          <a href="https://wpconvert.github.io/axentra/panel/logs/index.html">
+            📄 Transaction Logs
+          </a>
+
         </div>
 
         <div class="role-box">
@@ -463,7 +418,27 @@
       loading.style.display = "block";
       result.style.display = "none";
 
-      setTimeout(() => {
+      fetch(
+        "https://script.google.com/macros/s/AKfycby5bhEhV0ow6U9_t5EdtNtXmJR5i4F0rFU5Ybv3UqI-VYZbIdvJCqgAliz4BN9Y2x7x/exec",
+        {
+
+          method: "POST",
+
+          headers:{
+            "Content-Type":"application/json"
+          },
+
+          body: JSON.stringify({
+            bank: bank,
+            account: norek
+          })
+
+        }
+      )
+
+      .then(res => res.json())
+
+      .then(data => {
 
         loading.style.display = "none";
         result.style.display = "block";
@@ -472,48 +447,65 @@
         let status = "";
         let statusClass = "";
 
-        if(norek.length >= 10){
+        if(data.account_name){
 
+          accountName = data.account_name;
           status = "VALID";
           statusClass = "success";
 
-          if(bank === "mandiri") accountName = "BUDI SANTOSO";
-          if(bank === "bca") accountName = "ANDI PRATAMA";
-          if(bank === "bni") accountName = "RIZKY SAPUTRA";
-          if(bank === "bri") accountName = "DEWI LESTARI";
-          if(bank === "permata") accountName = "FAJAR NUGRAHA";
-
         } else {
 
+          accountName = "ACCOUNT NOT FOUND";
           status = "INVALID ACCOUNT";
           statusClass = "invalid";
-          accountName = "ACCOUNT NOT FOUND";
 
         }
 
-        document.getElementById("resultBank").innerText = bank.toUpperCase();
-        document.getElementById("resultNorek").innerText = norek;
-        document.getElementById("resultName").innerText = accountName;
+        document.getElementById("resultBank").innerText =
+          bank.toUpperCase();
 
-        const statusElement = document.getElementById("resultStatus");
+        document.getElementById("resultNorek").innerText =
+          norek;
+
+        document.getElementById("resultName").innerText =
+          accountName;
+
+        const statusElement =
+          document.getElementById("resultStatus");
 
         statusElement.innerText = status;
         statusElement.className = statusClass;
 
-        const logs = JSON.parse(localStorage.getItem("axentra_logs")) || [];
+        const logs =
+          JSON.parse(localStorage.getItem("axentra_logs")) || [];
 
         logs.unshift({
+
           type: "Bank Inquiry",
           bank: bank.toUpperCase(),
           norek: norek,
           name: accountName,
           status: status,
           time: new Date().toLocaleString()
+
         });
 
-        localStorage.setItem("axentra_logs", JSON.stringify(logs));
+        localStorage.setItem(
+          "axentra_logs",
+          JSON.stringify(logs)
+        );
 
-      }, 1800);
+      })
+
+      .catch(err => {
+
+        loading.style.display = "none";
+
+        alert("API Connection Failed");
+
+        console.log(err);
+
+      });
 
     });
 
