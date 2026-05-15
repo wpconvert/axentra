@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script>
+
+    const isLogin = localStorage.getItem("axentra_login");
+
+    if(isLogin !== "true"){
+
+      window.location.href = "https://wpconvert.github.io/axentra/";
+
+    }
+
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Axentra • Transaction Logs</title>
