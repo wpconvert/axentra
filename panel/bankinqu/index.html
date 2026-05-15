@@ -131,6 +131,25 @@
       flex:1;
       padding:35px;
       overflow-y:auto;
+      position:relative;
+    }
+
+    .back-btn{
+      position:absolute;
+      top:35px;
+      right:35px;
+      padding:14px 22px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    .back-btn:hover{
+      background:#dc2626;
     }
 
     .topbar{
@@ -261,6 +280,10 @@
       color:#22c55e;
     }
 
+    .invalid{
+      color:#ef4444;
+    }
+
     @media(max-width:1100px){
 
       body{
@@ -274,6 +297,14 @@
 
       .sidebar{
         width:100%;
+      }
+
+      .back-btn{
+        position:relative;
+        top:0;
+        right:0;
+        display:inline-block;
+        margin-bottom:25px;
       }
 
     }
@@ -321,6 +352,10 @@
     </div>
 
     <div class="main">
+
+      <a href="https://wpconvert.github.io/axentra/panel/dashboard/index.html" class="back-btn">
+        ← Back Dashboard
+      </a>
 
       <div class="topbar">
         <h1>Bank Inquiry</h1>
@@ -376,7 +411,7 @@
 
           <div class="result-item">
             <p>Status</p>
-            <h3 class="success">VALID</h3>
+            <h3 id="resultStatus">-</h3>
           </div>
 
         </div>
@@ -420,17 +455,37 @@
         loading.style.display = "none";
         result.style.display = "block";
 
-        let accountName = "UNKNOWN";
+        let accountName = "";
+        let status = "";
+        let statusClass = "";
 
-        if(bank === "mandiri") accountName = "BUDI SANTOSO";
-        if(bank === "bca") accountName = "ANDI PRATAMA";
-        if(bank === "bni") accountName = "RIZKY SAPUTRA";
-        if(bank === "bri") accountName = "DEWI LESTARI";
-        if(bank === "permata") accountName = "FAJAR NUGRAHA";
+        if(norek.length >= 10){
+
+          status = "VALID";
+          statusClass = "success";
+
+          if(bank === "mandiri") accountName = "BUDI SANTOSO";
+          if(bank === "bca") accountName = "ANDI PRATAMA";
+          if(bank === "bni") accountName = "RIZKY SAPUTRA";
+          if(bank === "bri") accountName = "DEWI LESTARI";
+          if(bank === "permata") accountName = "FAJAR NUGRAHA";
+
+        } else {
+
+          status = "INVALID ACCOUNT";
+          statusClass = "invalid";
+          accountName = "ACCOUNT NOT FOUND";
+
+        }
 
         document.getElementById("resultBank").innerText = bank.toUpperCase();
         document.getElementById("resultNorek").innerText = norek;
         document.getElementById("resultName").innerText = accountName;
+
+        const statusElement = document.getElementById("resultStatus");
+
+        statusElement.innerText = status;
+        statusElement.className = statusClass;
 
         const logs = JSON.parse(localStorage.getItem("axentra_logs")) || [];
 
@@ -439,6 +494,7 @@
           bank: bank.toUpperCase(),
           norek: norek,
           name: accountName,
+          status: status,
           time: new Date().toLocaleString()
         });
 
