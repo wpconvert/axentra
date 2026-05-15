@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Axentra Digital Bank</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -222,6 +222,11 @@
       outline:none;
     }
 
+    .input-group input:focus{
+      border-color:#dc2626;
+      box-shadow:0 0 0 3px rgba(220,38,38,0.2);
+    }
+
     .btn{
       width:100%;
       padding:18px;
@@ -239,10 +244,19 @@
       color:white;
     }
 
+    .btn-login:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 25px rgba(255,0,0,0.3);
+    }
+
     .btn-create{
       background:transparent;
       border:1px solid rgba(255,0,0,0.4);
       color:#ef4444;
+    }
+
+    .btn-create:hover{
+      background:rgba(255,0,0,0.1);
     }
 
     .secure-text{
@@ -281,6 +295,12 @@
       .login-card{
         width:90%;
         margin:50px 0;
+      }
+
+      .footer{
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start;
       }
 
     }
@@ -404,7 +424,7 @@
 
   <script>
 
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbyI_BR9tbmSablOdkaqHBk4LHtsda_8h8CNmTuJF0_mwSDp5TzMfQuOuOdp5Go4nnWS/exec";
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbx61gxBq1_xsZbFt8McugA_MtI64rVy0YHBSt-_JXe9A7XG9X52Uac5tx_AQYd20CcT/exec";
 
     const loginBtn = document.getElementById("loginBtn");
 
@@ -434,8 +454,18 @@
         if(data.success){
 
           localStorage.setItem("axentra_login", "true");
+          localStorage.setItem("axentra_role", data.role);
+          localStorage.setItem("axentra_username", data.username);
 
-          window.location.href = "dashboard.html";
+          if(data.role === "master"){
+
+            window.location.href = "https://wpconvert.github.io/axentra/panel/master/index.html";
+
+          } else {
+
+            window.location.href = "https://wpconvert.github.io/axentra/panel/dashboard/index.html";
+
+          }
 
         } else {
 
