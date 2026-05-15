@@ -155,18 +155,18 @@
       gap:15px;
     }
 
-    .top-actions button{
-      border:none;
+    .top-actions a{
+      text-decoration:none;
       padding:14px 20px;
       border-radius:16px;
       background:#111111;
       color:white;
-      cursor:pointer;
       transition:0.3s;
       border:1px solid rgba(255,255,255,0.05);
+      font-weight:600;
     }
 
-    .top-actions button:hover{
+    .top-actions a:hover{
       background:#dc2626;
     }
 
@@ -207,10 +207,14 @@
     .card h2{
       font-size:34px;
       margin-bottom:10px;
+      position:relative;
+      z-index:2;
     }
 
     .card p{
       color:#6b7280;
+      position:relative;
+      z-index:2;
     }
 
     .online{
@@ -286,20 +290,20 @@
       gap:18px;
     }
 
-    .quick-actions button{
+    .quick-actions a{
       width:100%;
       padding:18px;
-      border:none;
       border-radius:18px;
       background:linear-gradient(to right,#dc2626,#991b1b);
       color:white;
       font-size:16px;
       font-weight:600;
-      cursor:pointer;
+      text-decoration:none;
+      text-align:center;
       transition:0.3s;
     }
 
-    .quick-actions button:hover{
+    .quick-actions a:hover{
       transform:translateY(-2px);
     }
 
@@ -386,11 +390,15 @@
         </div>
 
         <div class="top-actions">
-          <button>🔔 Notifications</button>
 
-          <button id="logoutBtn">
+          <a href="#">
+            🔔 Notifications
+          </a>
+
+          <a href="https://wpconvert.github.io/axentra/" onclick="logoutUser()">
             🚪 Logout
-          </button>
+          </a>
+
         </div>
 
       </div>
@@ -447,21 +455,21 @@
 
           <div class="quick-actions">
 
-            <button onclick="window.location.href='https://wpconvert.github.io/axentra/panel/bankinqu/index.html'">
+            <a href="https://wpconvert.github.io/axentra/panel/bankinqu/index.html">
               🏦 Check Bank
-            </button>
+            </a>
 
-            <button onclick="window.location.href='https://wpconvert.github.io/axentra/panel/walletinqu/index.html'">
+            <a href="https://wpconvert.github.io/axentra/panel/walletinqu/index.html">
               💳 Check Ewallet
-            </button>
+            </a>
 
-            <button onclick="window.location.href='https://wpconvert.github.io/axentra/panel/logs/index.html'">
+            <a href="https://wpconvert.github.io/axentra/panel/logs/index.html">
               📊 Open Reports
-            </button>
+            </a>
 
-            <button>
+            <a href="#">
               ⚙ Manage Settings
-            </button>
+            </a>
 
           </div>
 
@@ -532,13 +540,13 @@
 
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    function logoutUser(){
 
-      localStorage.clear();
+      localStorage.removeItem("axentra_login");
+      localStorage.removeItem("axentra_role");
+      localStorage.removeItem("axentra_username");
 
-      window.location.href = "https://wpconvert.github.io/axentra/";
-
-    });
+    }
 
   </script>
 
