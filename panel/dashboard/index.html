@@ -63,14 +63,6 @@
       font-size:30px;
     }
 
-    .menu-title{
-      color:#6b7280;
-      font-size:14px;
-      margin-bottom:20px;
-      text-transform:uppercase;
-      letter-spacing:2px;
-    }
-
     .menu{
       display:flex;
       flex-direction:column;
@@ -93,7 +85,6 @@
     .menu .active{
       background:linear-gradient(to right,#dc2626,#991b1b);
       color:white;
-      box-shadow:0 10px 20px rgba(255,0,0,0.15);
     }
 
     .role-box{
@@ -158,23 +149,18 @@
       margin-top:5px;
     }
 
-    .top-actions{
-      display:flex;
-      gap:15px;
-    }
-
-    .top-actions button{
-      border:none;
-      padding:14px 20px;
+    .logout-btn{
+      text-decoration:none;
+      padding:14px 22px;
       border-radius:16px;
       background:#111111;
       color:white;
-      cursor:pointer;
-      transition:0.3s;
       border:1px solid rgba(255,255,255,0.05);
+      transition:0.3s;
+      font-weight:600;
     }
 
-    .top-actions button:hover{
+    .logout-btn:hover{
       background:#dc2626;
     }
 
@@ -190,20 +176,6 @@
       padding:30px;
       border-radius:30px;
       border:1px solid rgba(255,255,255,0.05);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .card::before{
-      content:'';
-      position:absolute;
-      width:200px;
-      height:200px;
-      background:rgba(255,0,0,0.08);
-      filter:blur(80px);
-      top:-80px;
-      right:-80px;
-      border-radius:50%;
     }
 
     .card h3{
@@ -219,6 +191,10 @@
 
     .card p{
       color:#6b7280;
+    }
+
+    .online{
+      color:#22c55e;
     }
 
     .grid{
@@ -290,42 +266,21 @@
       gap:18px;
     }
 
-    .quick-actions button{
+    .quick-actions a{
       width:100%;
       padding:18px;
-      border:none;
       border-radius:18px;
       background:linear-gradient(to right,#dc2626,#991b1b);
       color:white;
       font-size:16px;
       font-weight:600;
-      cursor:pointer;
+      text-decoration:none;
+      text-align:center;
       transition:0.3s;
     }
 
-    .quick-actions button:hover{
+    .quick-actions a:hover{
       transform:translateY(-2px);
-    }
-
-    @media(max-width:1100px){
-
-      body{
-        overflow:auto;
-      }
-
-      .container{
-        flex-direction:column;
-        height:auto;
-      }
-
-      .sidebar{
-        width:100%;
-      }
-
-      .grid{
-        grid-template-columns:1fr;
-      }
-
     }
 
   </style>
@@ -343,18 +298,29 @@
           <h1>Axentra</h1>
         </div>
 
-        <div class="menu-title">Main Menu</div>
-
         <div class="menu">
-          <a href="#" class="active">🏠 Dashboard</a>
-          <a href="#">🏦 Bank Inquiry</a>
-          <a href="#">💳 Ewallet Inquiry</a>
-          <a href="#">📄 Transaction Logs</a>
-          <a href="#">⚙ Settings</a>
+
+          <a href="https://wpconvert.github.io/axentra/panel/dashboard/index.html" class="active">
+            🏠 Dashboard
+          </a>
+
+          <a href="https://wpconvert.github.io/axentra/panel/bankinqu/index.html">
+            🏦 Bank Inquiry
+          </a>
+
+          <a href="https://wpconvert.github.io/axentra/panel/walletinqu/index.html">
+            💳 Ewallet Inquiry
+          </a>
+
+          <a href="https://wpconvert.github.io/axentra/panel/logs/index.html">
+            📄 Transaction Logs
+          </a>
+
         </div>
 
         <div class="role-box">
           <h3>ROLE ACCESS</h3>
+
           <div class="role-badge" id="roleText">
             ADMIN
           </div>
@@ -378,10 +344,9 @@
           <p>Welcome back to Axentra Control Panel</p>
         </div>
 
-        <div class="top-actions">
-          <button>🔔 Notifications</button>
-          <button id="logoutBtn">🚪 Logout</button>
-        </div>
+        <a href="https://wpconvert.github.io/axentra/" class="logout-btn" onclick="logoutUser()">
+          🚪 Logout
+        </a>
 
       </div>
 
@@ -389,19 +354,31 @@
 
         <div class="card">
           <h3>Total Inquiry</h3>
-          <h2>1,284</h2>
-          <p>Monthly bank checks</p>
+
+          <h2 id="totalInquiry">
+            0
+          </h2>
+
+          <p>Total bank & ewallet checks</p>
         </div>
 
         <div class="card">
           <h3>API Status</h3>
-          <h2>Online</h2>
-          <p>All systems operational</p>
+
+          <h2 class="online">
+            🟢 Online
+          </h2>
+
+          <p>Axentra system connected</p>
         </div>
 
         <div class="card">
           <h3>Account Type</h3>
-          <h2 id="accountRole">Admin</h2>
+
+          <h2 id="accountRole">
+            Admin
+          </h2>
+
           <p>Current permission level</p>
         </div>
 
@@ -410,69 +387,33 @@
       <div class="grid">
 
         <div class="panel">
+
           <h2>Recent Activity</h2>
 
-          <div class="transaction">
-
-            <div class="transaction-left">
-              <div class="transaction-icon">🏦</div>
-
-              <div>
-                <h3>Bank Inquiry</h3>
-                <p>Mandiri • 1234567890</p>
-              </div>
-            </div>
-
-            <div class="amount">
-              Success
-            </div>
-
-          </div>
-
-          <div class="transaction">
-
-            <div class="transaction-left">
-              <div class="transaction-icon">💳</div>
-
-              <div>
-                <h3>Ewallet Inquiry</h3>
-                <p>DANA • 08123456789</p>
-              </div>
-            </div>
-
-            <div class="amount">
-              Success
-            </div>
-
-          </div>
-
-          <div class="transaction">
-
-            <div class="transaction-left">
-              <div class="transaction-icon">🔐</div>
-
-              <div>
-                <h3>Login Activity</h3>
-                <p>New secure login detected</p>
-              </div>
-            </div>
-
-            <div class="amount">
-              Today
-            </div>
+          <div id="activityContainer">
 
           </div>
 
         </div>
 
         <div class="panel">
+
           <h2>Quick Actions</h2>
 
           <div class="quick-actions">
-            <button>🏦 Check Bank</button>
-            <button>💳 Check Ewallet</button>
-            <button>📊 Open Reports</button>
-            <button>⚙ Manage Settings</button>
+
+            <a href="https://wpconvert.github.io/axentra/panel/bankinqu/index.html">
+              🏦 Check Bank
+            </a>
+
+            <a href="https://wpconvert.github.io/axentra/panel/walletinqu/index.html">
+              💳 Check Ewallet
+            </a>
+
+            <a href="https://wpconvert.github.io/axentra/panel/logs/index.html">
+              📊 Open Reports
+            </a>
+
           </div>
 
         </div>
@@ -492,22 +433,65 @@
     document.getElementById("accountRole").innerText = role;
     document.getElementById("usernameText").innerText = username;
 
-    if(role !== "master"){
+    const logs = JSON.parse(localStorage.getItem("axentra_logs")) || [];
 
-      document.querySelector("a[href='#']:last-child").style.display = "none";
+    document.getElementById("totalInquiry").innerText = logs.length;
+
+    const activityContainer = document.getElementById("activityContainer");
+
+    if(logs.length === 0){
+
+      activityContainer.innerHTML = `
+        <p style="color:#6b7280;">
+          No recent activity
+        </p>
+      `;
+
+    } else {
+
+      logs.slice(0,5).forEach(log => {
+
+        activityContainer.innerHTML += `
+
+          <div class="transaction">
+
+            <div class="transaction-left">
+
+              <div class="transaction-icon">
+                ${log.type === "Bank Inquiry" ? "🏦" : "💳"}
+              </div>
+
+              <div>
+                <h3>${log.type}</h3>
+
+                <p>
+                  ${log.bank || log.wallet} • ${log.norek || log.number}
+                </p>
+              </div>
+
+            </div>
+
+            <div class="amount">
+              ${log.status || "Success"}
+            </div>
+
+          </div>
+
+        `;
+
+      });
 
     }
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    function logoutUser(){
 
-      localStorage.clear();
+      localStorage.removeItem("axentra_login");
+      localStorage.removeItem("axentra_role");
+      localStorage.removeItem("axentra_username");
 
-      window.location.href = "https://wpconvert.github.io/axentra/";
-
-    });
+    }
 
   </script>
 
 </body>
 </html>
-```
