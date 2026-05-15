@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
+
     *{
       margin:0;
       padding:0;
@@ -27,8 +28,6 @@
       height:100vh;
       display:flex;
     }
-
-    /* LEFT SIDE */
 
     .left{
       width:50%;
@@ -139,8 +138,6 @@
       backdrop-filter:blur(10px);
     }
 
-    /* RIGHT SIDE */
-
     .right{
       width:50%;
       display:flex;
@@ -225,21 +222,6 @@
       outline:none;
     }
 
-    .input-group input:focus{
-      border-color:#dc2626;
-      box-shadow:0 0 0 3px rgba(220,38,38,0.2);
-    }
-
-    .forgot{
-      text-align:right;
-      margin-bottom:25px;
-    }
-
-    .forgot a{
-      color:#ef4444;
-      text-decoration:none;
-    }
-
     .btn{
       width:100%;
       padding:18px;
@@ -257,25 +239,23 @@
       color:white;
     }
 
-    .btn-login:hover{
-      transform:translateY(-2px);
-      box-shadow:0 10px 25px rgba(255,0,0,0.3);
-    }
-
     .btn-create{
       background:transparent;
       border:1px solid rgba(255,0,0,0.4);
       color:#ef4444;
     }
 
-    .btn-create:hover{
-      background:rgba(255,0,0,0.1);
-    }
-
     .secure-text{
       text-align:center;
       margin-top:25px;
       color:#9ca3af;
+    }
+
+    .loading{
+      display:none;
+      text-align:center;
+      margin-top:15px;
+      color:#ef4444;
     }
 
     @media(max-width:1000px){
@@ -303,11 +283,6 @@
         margin:50px 0;
       }
 
-      .footer{
-        flex-direction:column;
-        gap:20px;
-        align-items:flex-start;
-      }
     }
 
   </style>
@@ -316,8 +291,6 @@
 <body>
 
   <div class="container">
-
-    <!-- LEFT -->
 
     <div class="left">
 
@@ -380,8 +353,6 @@
 
     </div>
 
-    <!-- RIGHT -->
-
     <div class="right">
 
       <div class="glow"></div>
@@ -400,26 +371,26 @@
         <div class="input-group">
           <label>Username</label>
 
-          <input type="text" placeholder="Enter your username">
+          <input id="username" type="text" placeholder="Enter your username">
         </div>
 
         <div class="input-group">
           <label>Password</label>
 
-          <input type="password" placeholder="Enter your password">
+          <input id="password" type="password" placeholder="Enter your password">
         </div>
 
-        <div class="forgot">
-          <a href="#">Forgot password?</a>
-        </div>
-
-        <button class="btn btn-login">
+        <button id="loginBtn" class="btn btn-login">
           Login
         </button>
 
         <button class="btn btn-create">
           Create Account
         </button>
+
+        <div class="loading" id="loading">
+          Checking account...
+        </div>
 
         <div class="secure-text">
           🔒 Secure and encrypted connection
@@ -430,6 +401,59 @@
     </div>
 
   </div>
+
+  <script>
+
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbyI_BR9tbmSablOdkaqHBk4LHtsda_8h8CNmTuJF0_mwSDp5TzMfQuOuOdp5Go4nnWS/exec";
+
+    const loginBtn = document.getElementById("loginBtn");
+
+    loginBtn.addEventListener("click", async () => {
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const loading = document.getElementById("loading");
+
+      loading.style.display = "block";
+
+      try {
+
+        const response = await fetch(GAS_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            username,
+            password
+          })
+        });
+
+        const data = await response.json();
+
+        loading.style.display = "none";
+
+        if(data.success){
+
+          localStorage.setItem("axentra_login", "true");
+
+          window.location.href = "dashboard.html";
+
+        } else {
+
+          alert("Username atau password salah");
+
+        }
+
+      } catch(err){
+
+        loading.style.display = "none";
+
+        alert("Server error");
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html>
